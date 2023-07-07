@@ -43,6 +43,7 @@ namespace GMTK2023
             the_level = new Level(this, new Rectangle(0, 0, 480 * 2, 360), player, shadow, cam);
 
             player.current_level = the_level;
+            shadow.current_level = the_level;
 
             // determine how much to scale the window up
             // given how big the monitor is
@@ -110,14 +111,28 @@ namespace GMTK2023
             }
             else
             {
-
+                shadow.Update(gameTime);
+                player.Follow(shadow.DrawBox);
             }
-            
 
-            int x_follow = player.DrawBox.X - 240 + 8;
+            int x_follow = 0;
+            int y_follow = 0;
+
+            if (player_active)
+            {
+                x_follow = player.DrawBox.X - 240 + 8;
+                y_follow = 0;
+            }
+            else
+            {
+                x_follow = shadow.DrawBox.X - 240 + 8;
+                y_follow = 80;
+            }
+                
+
             x_follow = Math.Clamp(x_follow, the_level.bounds.Left, the_level.bounds.Right - 480);
 
-            cam.Follow(new Vector2(x_follow, 0));
+            cam.Follow(new Vector2(x_follow, y_follow));
 
             base.Update(gameTime);
         }

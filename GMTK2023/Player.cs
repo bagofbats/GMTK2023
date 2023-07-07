@@ -122,6 +122,15 @@ namespace GMTK2023
                 pos.Y = 220 - 16;
         }
 
+        public void Follow(Rectangle player_rect)
+        {
+            pos.X = player_rect.X;
+
+            int diff = Math.Abs(player_rect.Y - 220);
+
+            pos.Y = 220 - diff - 15;
+        }
+
         private void GetInput()
         {
             up = contManager.UP;
