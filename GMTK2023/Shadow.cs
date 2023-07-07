@@ -36,5 +36,14 @@ namespace GMTK2023
         {
             _spriteBatch.Draw(white, DrawBox, Color.Black);
         }
+
+        public void Follow(Rectangle player_rect)
+        {
+            pos.X = player_rect.X;
+
+            int diff = Math.Abs(player_rect.Y - 220 + 15);
+
+            pos.Y = 220 + diff;
+        }
     }
 }

@@ -90,6 +90,7 @@ namespace GMTK2023
             contManager.GetInputs(Keyboard.GetState());
 
             player.Update(gameTime);
+            shadow.Follow(player.DrawBox);
 
             base.Update(gameTime);
         }
