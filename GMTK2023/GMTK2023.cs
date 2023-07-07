@@ -23,11 +23,16 @@ namespace GMTK2023
         private Camera cam;
         private ControllerManager contManager;
 
+        public bool player_active
+        { get; private set; }
+
         public GMTK2023()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
+            player_active = true;
 
             contManager = new ControllerManager();
 
@@ -95,8 +100,19 @@ namespace GMTK2023
 
             contManager.GetInputs(Keyboard.GetState());
 
-            player.Update(gameTime);
-            shadow.Follow(player.DrawBox);
+            if (contManager.SHIFT_PRESSED)
+                player_active = !player_active;
+
+            if (player_active)
+            {
+                player.Update(gameTime);
+                shadow.Follow(player.DrawBox);
+            }
+            else
+            {
+
+            }
+            
 
             int x_follow = player.DrawBox.X - 240 + 8;
             x_follow = Math.Clamp(x_follow, the_level.bounds.Left, the_level.bounds.Right - 480);
@@ -114,9 +130,10 @@ namespace GMTK2023
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
                 SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, transformMatrix: cam.Transform);
 
+            the_level.Draw(_spriteBatch);
+
             player.Draw(_spriteBatch);
             shadow.Draw(_spriteBatch);
-            the_level.Draw(_spriteBatch);
 
             _spriteBatch.End();
 

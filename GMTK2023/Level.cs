@@ -32,10 +32,12 @@ namespace GMTK2023
             this.shadow = shadow;
             this.cam = cam;
 
-            walls.Add(new Rectangle(300, 220 - 24, 96, 48));
-            walls.Add(new Rectangle(396, 220 - 24, 96, 24));
-            walls.Add(new Rectangle(396, 220, 96, 8));
-            walls.Add(new Rectangle(396 + 96, 220 - 8, 64, 16));
+            walls.Add(new Rectangle(300, 220 - 24, 96, 49));
+            walls.Add(new Rectangle(396, 220 - 24, 96, 25));
+            walls.Add(new Rectangle(396, 220, 96, 9));
+            walls.Add(new Rectangle(396 + 96, 220 - 8, 128 * 2, 17));
+            walls.Add(new Rectangle(564, 220, 24, 64));
+            walls.Add(new Rectangle(662, 220 - 72, 24, 64));
         }
 
         public void Load()
