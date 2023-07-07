@@ -17,7 +17,7 @@ namespace GMTK2023
         private Texture2D white;
 
         public Rectangle DrawBox
-        { get { return new Rectangle((int)pos.X, (int)pos.Y, 32, 32); } }
+        { get { return new Rectangle((int)pos.X, (int)pos.Y, 16, 16); } }
 
         public Player(GMTK2023 root, Vector2 pos) 
         {

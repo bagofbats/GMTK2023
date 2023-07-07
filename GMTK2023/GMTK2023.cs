@@ -61,7 +61,7 @@ namespace GMTK2023
 
             base.Initialize();
 
-            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 320, 240);
+            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 480, 360);
         }
 
         protected override void LoadContent()
@@ -71,6 +71,7 @@ namespace GMTK2023
             // TODO: use this.Content to load your game content here
 
             player.Load();
+            the_level.Load();
         }
 
         protected override void Update(GameTime gameTime)
@@ -88,15 +89,20 @@ namespace GMTK2023
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
             GraphicsDevice.Clear(Color.DarkSlateGray);
 
+            _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
+                SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+            player.Draw(_spriteBatch);
+            the_level.Draw(_spriteBatch);
+
+            _spriteBatch.End();
+
             GraphicsDevice.SetRenderTarget(null);
 
             // TODO: Add your drawing code here
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _spriteBatch.Draw(_nativeRenderTarget, _screenRectangle, Color.White);
-
-            player.Draw(_spriteBatch);
-
             _spriteBatch.End();
 
             base.Draw(gameTime);
