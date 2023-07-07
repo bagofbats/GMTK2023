@@ -13,6 +13,7 @@ namespace GMTK2023
         private RenderTarget2D _nativeRenderTarget;
 
         private Player player;
+        private Shadow shadow;
         private Level the_level;
 
         public GMTK2023()
@@ -22,9 +23,10 @@ namespace GMTK2023
             IsMouseVisible = true;
 
             player = new Player(this, new Vector2(100, 100));
+            shadow = new Shadow(this, new Vector2(100, 300));
             Camera cam = new Camera();
 
-            the_level = new Level(this, new Rectangle(0, 0, 480, 360), player, cam);
+            the_level = new Level(this, new Rectangle(0, 0, 480, 360), player, shadow, cam);
             
 
 
@@ -71,6 +73,7 @@ namespace GMTK2023
             // TODO: use this.Content to load your game content here
 
             player.Load();
+            shadow.Load();
             the_level.Load();
         }
 
@@ -93,6 +96,7 @@ namespace GMTK2023
                 SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise);
 
             player.Draw(_spriteBatch);
+            shadow.Draw(_spriteBatch);
             the_level.Draw(_spriteBatch);
 
             _spriteBatch.End();

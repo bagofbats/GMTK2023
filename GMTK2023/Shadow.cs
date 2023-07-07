@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace GMTK2023
 {
-    public class Player
+    public class Shadow
     {
         private GMTK2023 root;
         private Vector2 pos;
@@ -16,15 +16,10 @@ namespace GMTK2023
         //private Texture2D sheet;
         private Texture2D white;
 
-        // gameplay fields
-        private float hsp = 0f;
-        private float vsp = 0f;
-
-
         public Rectangle DrawBox
         { get { return new Rectangle((int)pos.X, (int)pos.Y, 16, 16); } }
 
-        public Player(GMTK2023 root, Vector2 pos) 
+        public Shadow(GMTK2023 root, Vector2 pos)
         {
             this.root = root;
             this.pos = pos;
@@ -37,7 +32,7 @@ namespace GMTK2023
 
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(white, DrawBox, Color.White);
+            _spriteBatch.Draw(white, DrawBox, Color.Black);
         }
     }
 }

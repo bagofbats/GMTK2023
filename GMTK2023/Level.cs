@@ -13,16 +13,18 @@ namespace GMTK2023
         private GMTK2023 root;
         private Rectangle bounds;
         private Player player;
+        private Shadow shadow;
         private Camera cam;
 
         private int mirror = 220;
         private Texture2D white;
 
-        public Level(GMTK2023 root, Rectangle bounds, Player player, Camera cam) 
+        public Level(GMTK2023 root, Rectangle bounds, Player player, Shadow shadow, Camera cam) 
         {
             this.root = root;
             this.bounds = bounds;
             this.player = player;
+            this.shadow = shadow;
             this.cam = cam;
         }
 
