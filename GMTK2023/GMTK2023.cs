@@ -102,7 +102,21 @@ namespace GMTK2023
             contManager.GetInputs(Keyboard.GetState());
 
             if (contManager.SHIFT_PRESSED)
-                player_active = !player_active;
+            {
+                if (player_active)
+                {
+                    Rectangle check = the_level.SimpleCheckCollision(shadow.DrawBox);
+                    if (check == new Rectangle(0, 0, 0, 0))
+                        player_active = false;
+                }
+                else
+                {
+                    Rectangle check = the_level.SimpleCheckCollision(player.DrawBox);
+                    if (check == new Rectangle(0, 0, 0, 0))
+                        player_active = true;
+                }
+            }
+                
 
             if (player_active)
             {
@@ -115,8 +129,8 @@ namespace GMTK2023
                 player.Follow(shadow.DrawBox);
             }
 
-            int x_follow = 0;
-            int y_follow = 0;
+            int x_follow;
+            int y_follow;
 
             if (player_active)
             {
