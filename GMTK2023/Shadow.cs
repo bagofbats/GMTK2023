@@ -12,6 +12,7 @@ namespace GMTK2023
     {
         private GMTK2023 root;
         private Vector2 pos;
+        private ControllerManager contManager;
 
         //private Texture2D sheet;
         private Texture2D white;
@@ -19,10 +20,11 @@ namespace GMTK2023
         public Rectangle DrawBox
         { get { return new Rectangle((int)pos.X, (int)pos.Y, 16, 16); } }
 
-        public Shadow(GMTK2023 root, Vector2 pos)
+        public Shadow(GMTK2023 root, Vector2 pos, ControllerManager contManager)
         {
             this.root = root;
             this.pos = pos;
+            this.contManager = contManager;
         }
 
         public void Load()

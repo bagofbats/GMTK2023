@@ -15,6 +15,7 @@ namespace GMTK2023
         private Player player;
         private Shadow shadow;
         private Level the_level;
+        private ControllerManager contManager;
 
         public GMTK2023()
         {
@@ -22,8 +23,10 @@ namespace GMTK2023
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
-            player = new Player(this, new Vector2(100, 100));
-            shadow = new Shadow(this, new Vector2(100, 300));
+            contManager = new ControllerManager();
+
+            player = new Player(this, new Vector2(100, 100), contManager);
+            shadow = new Shadow(this, new Vector2(100, 300), contManager);
             Camera cam = new Camera();
 
             the_level = new Level(this, new Rectangle(0, 0, 480, 360), player, shadow, cam);
@@ -83,6 +86,10 @@ namespace GMTK2023
                 Exit();
 
             // TODO: Add your update logic here
+
+            contManager.GetInputs(Keyboard.GetState());
+
+            player.Update(gameTime);
 
             base.Update(gameTime);
         }
