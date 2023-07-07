@@ -1,6 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace GMTK2023
 {
@@ -30,9 +35,9 @@ namespace GMTK2023
             shadow = new Shadow(this, new Vector2(100, 300), contManager);
             cam = new Camera();
 
-            the_level = new Level(this, new Rectangle(0, 0, 480, 360), player, shadow, cam);
-            
+            the_level = new Level(this, new Rectangle(0, 0, 480 * 2, 360), player, shadow, cam);
 
+            player.current_level = the_level;
 
             // determine how much to scale the window up
             // given how big the monitor is
@@ -92,7 +97,11 @@ namespace GMTK2023
 
             player.Update(gameTime);
             shadow.Follow(player.DrawBox);
-            cam.Follow(new Vector2(player.DrawBox.X - 240, 0));
+
+            int x_follow = player.DrawBox.X - 240 + 8;
+            x_follow = Math.Clamp(x_follow, the_level.bounds.Left, the_level.bounds.Right - 480);
+
+            cam.Follow(new Vector2(x_follow, 0));
 
             base.Update(gameTime);
         }

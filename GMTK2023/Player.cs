@@ -14,6 +14,7 @@ namespace GMTK2023
         private GMTK2023 root;
         private Vector2 pos;
         private ControllerManager contManager;
+        public Level current_level;
 
         //private Texture2D sheet;
         private Texture2D white;
@@ -64,7 +65,31 @@ namespace GMTK2023
         {
             GetInput();
 
+            // ---- horizontal movement ----
             hsp = hsp_max * hdir;
+
+            float hsp_col_check = hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            if (hsp_col_check > 0)
+                hsp_col_check += 1;
+            else
+                hsp_col_check -= 1;
+
+            Rectangle hcheck = current_level.SimpleCheckCollision(new Rectangle((int)(DrawBox.X + hsp_col_check), DrawBox.Y, DrawBox.Width, DrawBox.Height));
+
+            if (hcheck != new Rectangle(0, 0, 0, 0))
+            {
+                if (hsp > 0)
+                    pos.X = hcheck.Left - 16;
+                else if (hsp < 0)
+                    pos.X = hcheck.Right;
+                hsp = 0;
+            }
+
+
+            pos.X += hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+
+
+            // ---- vertical movement ----
             vsp += grav;
 
             if (space_pressed && pos.Y <= 220 - 16)
@@ -73,7 +98,24 @@ namespace GMTK2023
             if (space_released && vsp < 0)
                 vsp /= 2;
 
-            pos.X += hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            float vsp_col_check = vsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            if (vsp_col_check > 0)
+                vsp_col_check += 1;
+            else
+                vsp_col_check -= 1;
+
+            Rectangle vcheck = current_level.SimpleCheckCollision(new Rectangle(DrawBox.X, (int)(DrawBox.Y + vsp_col_check), DrawBox.Width, DrawBox.Height));
+
+            if (vcheck != new Rectangle(0, 0, 0, 0))
+            {
+                if (vsp < 0)
+                    pos.Y = vcheck.Bottom;
+                else if (vsp > 0)
+                    pos.Y = vcheck.Top - 16;
+                vsp = 0;
+            }
+
+
             pos.Y += vsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
             if (pos.Y >= 220 - 16)
