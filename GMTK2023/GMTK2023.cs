@@ -12,19 +12,29 @@ namespace GMTK2023
         private Rectangle _screenRectangle;
         private RenderTarget2D _nativeRenderTarget;
 
+        private Player player;
+        private Level the_level;
+
         public GMTK2023()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
 
+            player = new Player(this, new Vector2(100, 100));
+            Camera cam = new Camera();
+
+            the_level = new Level(this, new Rectangle(0, 0, 480, 360), player, cam);
+            
+
+
             // determine how much to scale the window up
             // given how big the monitor is
             int w = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             int h = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            int target_w = 320;
-            int target_h = 240;
+            int target_w = 480;
+            int target_h = 360;
             int scale = 1;
 
             while (target_w * (scale + 1) < w && target_h * (scale + 1) < h)
@@ -59,6 +69,8 @@ namespace GMTK2023
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            player.Load();
         }
 
         protected override void Update(GameTime gameTime)
@@ -82,6 +94,9 @@ namespace GMTK2023
 
             _spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             _spriteBatch.Draw(_nativeRenderTarget, _screenRectangle, Color.White);
+
+            player.Draw(_spriteBatch);
+
             _spriteBatch.End();
 
             base.Draw(gameTime);
