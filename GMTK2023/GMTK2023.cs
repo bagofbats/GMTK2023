@@ -25,6 +25,16 @@ namespace GMTK2023
 
         private Texture2D white;
 
+        private List<Rectangle> lvl1_walls = new List<Rectangle>()
+        {
+            new Rectangle(300, 220 - 24, 96, 49),
+            new Rectangle(396, 220 - 24, 96, 25),
+            new Rectangle(396, 220, 96, 9),
+            new Rectangle(396 + 96, 220 - 8, 256 * 2, 17),
+            new Rectangle(532, 220, 24, 64),
+            new Rectangle(662, 220 - 72, 24, 64)
+        };
+
         public bool player_active
         { get; private set; }
 
@@ -42,7 +52,7 @@ namespace GMTK2023
             shadow = new Shadow(this, new Vector2(100, 300), contManager);
             cam = new Camera();
 
-            the_level = new Level(this, new Rectangle(0, 0, 960 + 160, 360), player, shadow, cam);
+            the_level = new Level(this, new Rectangle(0, 0, 960 + 160, 360), player, shadow, cam, lvl1_walls);
 
             player.current_level = the_level;
             shadow.current_level = the_level;
