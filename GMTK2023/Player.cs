@@ -17,8 +17,9 @@ namespace GMTK2023
         public Level current_level;
         public Shadow shadow;
 
-        //private Texture2D sheet;
+        private Texture2D sheet;
         private Texture2D white;
+        private Rectangle frame = new Rectangle(0, 0, 32, 32);
 
 
         // input fields
@@ -43,7 +44,7 @@ namespace GMTK2023
 
 
         public Rectangle DrawBox
-        { get { return new Rectangle((int)pos.X, (int)pos.Y, 16, 16); } }
+        { get { return new Rectangle((int)pos.X, (int)pos.Y, 32, 32); } }
 
         public Player(GMTK2023 root, Vector2 pos, ControllerManager contManager) 
         {
@@ -55,11 +56,12 @@ namespace GMTK2023
         public void Load()
         {
             white = root.Content.Load<Texture2D>("black");
+            sheet = root.Content.Load<Texture2D>("gmtk2023_sheet");
         }
 
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(white, DrawBox, Color.White);
+            _spriteBatch.Draw(sheet, DrawBox, frame, Color.White);
         }
 
         public void Update(GameTime gameTime)
@@ -83,8 +85,8 @@ namespace GMTK2023
             {
                 if (hsp > 0)
                 {
-                    diff = (int)Math.Abs(pos.X - hcheck.Left + 16);
-                    pos.X = hcheck.Left - 16;
+                    diff = (int)Math.Abs(pos.X - hcheck.Left + 32);
+                    pos.X = hcheck.Left - 32;
                 }
                     
                 else if (hsp < 0)
@@ -104,7 +106,7 @@ namespace GMTK2023
             // ---- vertical movement ----
             vsp += grav;
 
-            if (space_pressed && pos.Y <= 220 - 16)
+            if (space_pressed && pos.Y <= 220 - 32)
                 vsp = -4.2f;
 
             if (space_released && vsp < 0)
@@ -123,15 +125,15 @@ namespace GMTK2023
                 if (vsp < 0)
                     pos.Y = vcheck.Bottom;
                 else if (vsp > 0)
-                    pos.Y = vcheck.Top - 16;
+                    pos.Y = vcheck.Top - 32;
                 vsp = 0;
             }
 
 
             pos.Y += vsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
-            if (pos.Y >= 220 - 16)
-                pos.Y = 220 - 16;
+            if (pos.Y >= 220 - 32)
+                pos.Y = 220 - 32;
         }
 
         public void Follow(Rectangle player_rect)
@@ -140,7 +142,7 @@ namespace GMTK2023
 
             int diff = Math.Abs(player_rect.Y - 220);
 
-            pos.Y = 220 - diff - 15;
+            pos.Y = 220 - diff - 31;
         }
 
         private void GetInput()

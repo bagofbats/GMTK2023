@@ -17,8 +17,9 @@ namespace GMTK2023
         public Level current_level;
         public Player player;
 
-        //private Texture2D sheet;
+        private Texture2D sheet;
         private Texture2D white;
+        private Rectangle frame = new Rectangle(0, 32, 32, 32);
 
         // input fields
         private bool up;
@@ -41,7 +42,7 @@ namespace GMTK2023
         private float grav = 0.211f;
 
         public Rectangle DrawBox
-        { get { return new Rectangle((int)pos.X, (int)pos.Y, 16, 16); } }
+        { get { return new Rectangle((int)pos.X, (int)pos.Y, 32, 32); } }
 
         public Shadow(GMTK2023 root, Vector2 pos, ControllerManager contManager)
         {
@@ -53,11 +54,12 @@ namespace GMTK2023
         public void Load()
         {
             white = root.Content.Load<Texture2D>("black");
+            sheet = root.Content.Load<Texture2D>("gmtk2023_sheet");
         }
 
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(white, DrawBox, Color.Black);
+            _spriteBatch.Draw(sheet, DrawBox, frame, Color.White);
         }
 
         public void Update(GameTime gameTime)
@@ -81,8 +83,8 @@ namespace GMTK2023
             {
                 if (hsp > 0)
                 {
-                    diff = (int)Math.Abs(pos.X - hcheck.Left + 16);
-                    pos.X = hcheck.Left - 16;
+                    diff = (int)Math.Abs(pos.X - hcheck.Left + 32);
+                    pos.X = hcheck.Left - 32;
                 }
                 else if (hsp < 0)
                 {
@@ -120,7 +122,7 @@ namespace GMTK2023
                 if (vsp < 0)
                     pos.Y = vcheck.Bottom;
                 else if (vsp > 0)
-                    pos.Y = vcheck.Top - 16;
+                    pos.Y = vcheck.Top - 32;
                 vsp = 0;
             }
 
@@ -135,7 +137,7 @@ namespace GMTK2023
         {
             // pos.X = player_rect.X;
 
-            int diff = Math.Abs(player_rect.Y - 220 + 15);
+            int diff = Math.Abs(player_rect.Y - 220 + 31);
 
             pos.Y = 220 + diff;
         }

@@ -35,9 +35,13 @@ namespace GMTK2023
             walls.Add(new Rectangle(300, 220 - 24, 96, 49));
             walls.Add(new Rectangle(396, 220 - 24, 96, 25));
             walls.Add(new Rectangle(396, 220, 96, 9));
-            walls.Add(new Rectangle(396 + 96, 220 - 8, 128 * 2, 17));
-            walls.Add(new Rectangle(564, 220, 24, 64));
+            walls.Add(new Rectangle(396 + 96, 220 - 8, 256 * 2, 17));
+            walls.Add(new Rectangle(532, 220, 24, 64));
             walls.Add(new Rectangle(662, 220 - 72, 24, 64));
+
+
+            walls.Add(new Rectangle(bounds.X - 32, 0, 32, bounds.Height));
+            walls.Add(new Rectangle(bounds.X + bounds.Width, 0, 32, bounds.Height));
         }
 
         public void Load()
