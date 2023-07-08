@@ -39,7 +39,10 @@ namespace GMTK2023
         private int lvlx_mirror = 140;
         */
 
-        private List<Rectangle> lvl0_walls = new List<Rectangle>();
+        private List<Rectangle> lvl0_walls = new List<Rectangle>()
+        {
+            new Rectangle(156, 140 - 16, 300, 24)
+        };
         private List<Vector2> lvl0_doors = new List<Vector2>()
         {
             new Vector2(100, 100),

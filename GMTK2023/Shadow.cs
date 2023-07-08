@@ -36,7 +36,7 @@ namespace GMTK2023
         private float hsp = 0f;
         public float vsp = 0f;
         private int hdir = 0;
-        private int last_hdir = 1;
+        public int last_hdir = 1;
         private float hsp_max = 1f;
         private float grav = 0.211f;
 
@@ -70,6 +70,11 @@ namespace GMTK2023
                 frame.X = 64;
             else
                 frame.X = 0;
+
+            if (last_hdir == 1)
+                frame.Y = 32;
+            else
+                frame.Y = 96;
 
             _spriteBatch.Draw(sheet, DrawBox, frame, Color.White * transparency);
             //_spriteBatch.Draw(white, HitBox, Color.Blue * 0.4f);
@@ -163,6 +168,8 @@ namespace GMTK2023
             int diff = Math.Abs(player_rect.Y - root.current_level.mirror + 31);
 
             pos.Y = root.current_level.mirror + diff;
+
+            last_hdir = player.last_hdir;
         }
 
         private void GetInput()
