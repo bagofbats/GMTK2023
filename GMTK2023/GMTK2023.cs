@@ -20,7 +20,8 @@ namespace GMTK2023
         private Player player;
         private Shadow shadow;
         private Level the_level;
-        private Camera cam;
+        public Camera cam
+        { get; private set; }
         private ControllerManager contManager;
 
         private Texture2D white;

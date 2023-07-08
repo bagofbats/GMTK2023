@@ -36,8 +36,8 @@ namespace GMTK2023
                 this.walls.Add(wall);
             
 
-            walls.Add(new Rectangle(bounds.X - 32, 0, 32, bounds.Height));
-            walls.Add(new Rectangle(bounds.X + bounds.Width, 0, 32, bounds.Height));
+            this.walls.Add(new Rectangle(bounds.X - 32, 0, 32, bounds.Height));
+            this.walls.Add(new Rectangle(bounds.X + bounds.Width, 0, 32, bounds.Height));
         }
 
         public void Load()
