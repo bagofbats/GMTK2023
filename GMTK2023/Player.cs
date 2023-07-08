@@ -111,6 +111,14 @@ namespace GMTK2023
                 hsp = 0;
             }
 
+            (float cam_x, float cam_y) = root.cam.GetPos();
+
+            if (shadow.pos.X >= cam_x + 298)
+                hsp = Math.Min(hsp, 0);
+
+            if (shadow.pos.X <= cam_x - 10)
+                hsp = Math.Max(hsp, 0);
+
 
             pos.X += (int)(hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
             shadow.pos.X += (int)(diff + (hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60));

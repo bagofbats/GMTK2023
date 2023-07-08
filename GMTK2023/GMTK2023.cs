@@ -20,6 +20,7 @@ namespace GMTK2023
         private Player player;
         private Shadow shadow;
         private Level lvl1;
+        private Level lvl0;
 
 
         public Level current_level
@@ -39,8 +40,16 @@ namespace GMTK2023
         */
 
         private List<Rectangle> lvl0_walls = new List<Rectangle>();
-        private List<Vector2> lvl0_doors = new List<Vector2>();
-        private List<Vector2> lvl0_starting_pos = new List<Vector2>();
+        private List<Vector2> lvl0_doors = new List<Vector2>()
+        {
+            new Vector2(100, 100),
+            new Vector2(100, 200)
+        };
+        private List<Vector2> lvl0_starting_pos = new List<Vector2>()
+        {
+            new Vector2(32, 100),
+            new Vector2(32, 200)
+        };
         private int lvl0_mirror = 140;
 
         private List<Rectangle> lvl1_walls = new List<Rectangle>()
@@ -77,8 +86,9 @@ namespace GMTK2023
             cam = new Camera();
 
             lvl1 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl1_walls, lvl1_doors, lvl1_starting_pos, lvl1_mirror);
+            lvl0 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl0_walls, lvl0_doors, lvl0_starting_pos, lvl0_mirror);
 
-            current_level = lvl1;
+            current_level = lvl0;
             player.shadow = shadow;
             shadow.player = player;
 
@@ -128,7 +138,7 @@ namespace GMTK2023
 
             player.Load();
             shadow.Load();
-            lvl1.Load();
+            current_level.Load();
         }
 
         protected override void Update(GameTime gameTime)
@@ -144,7 +154,7 @@ namespace GMTK2023
             {
                 if (player_active)
                 {
-                    Rectangle check = lvl1.SimpleCheckCollision(shadow.HitBox);
+                    Rectangle check = current_level.SimpleCheckCollision(shadow.HitBox);
                     if (check == new Rectangle(0, 0, 0, 0))
                     {
                         player_active = false;
@@ -154,7 +164,7 @@ namespace GMTK2023
                 }
                 else
                 {
-                    Rectangle check = lvl1.SimpleCheckCollision(player.HitBox);
+                    Rectangle check = current_level.SimpleCheckCollision(player.HitBox);
                     if (check == new Rectangle(0, 0, 0, 0))
                     {
                         player_active = true;
@@ -191,7 +201,7 @@ namespace GMTK2023
             }
                 
 
-            x_follow = Math.Clamp(x_follow, lvl1.bounds.Left, lvl1.bounds.Right - 320);
+            x_follow = Math.Clamp(x_follow, current_level.bounds.Left, current_level.bounds.Right - 320);
 
             cam.Follow(new Vector2(x_follow, y_follow));
 
@@ -206,7 +216,7 @@ namespace GMTK2023
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
                 SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, transformMatrix: cam.Transform);
 
-            lvl1.Draw(_spriteBatch);
+            current_level.Draw(_spriteBatch);
 
             player.Draw(_spriteBatch);
             shadow.Draw(_spriteBatch);

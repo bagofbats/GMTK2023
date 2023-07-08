@@ -110,7 +110,7 @@ namespace GMTK2023
 
             (float cam_x, float cam_y) = root.cam.GetPos();
 
-            if (player.pos.X >= cam_x + 300)
+            if (player.pos.X >= cam_x + 298)
                 hsp = Math.Max(hsp, 0);
 
             if (player.pos.X <= cam_x - 10)
