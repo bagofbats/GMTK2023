@@ -44,6 +44,8 @@ namespace GMTK2023
 
             player.current_level = the_level;
             shadow.current_level = the_level;
+            player.shadow = shadow;
+            shadow.player = player;
 
             // determine how much to scale the window up
             // given how big the monitor is
@@ -107,13 +109,21 @@ namespace GMTK2023
                 {
                     Rectangle check = the_level.SimpleCheckCollision(shadow.DrawBox);
                     if (check == new Rectangle(0, 0, 0, 0))
+                    {
                         player_active = false;
+                        shadow.vsp = -player.vsp;
+                    }
+                        
                 }
                 else
                 {
                     Rectangle check = the_level.SimpleCheckCollision(player.DrawBox);
                     if (check == new Rectangle(0, 0, 0, 0))
+                    {
                         player_active = true;
+                        player.vsp = -shadow.vsp;
+                    }
+                        
                 }
             }
                 

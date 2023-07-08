@@ -12,9 +12,10 @@ namespace GMTK2023
     public class Player
     {
         private GMTK2023 root;
-        private Vector2 pos;
+        public Vector2 pos;
         private ControllerManager contManager;
         public Level current_level;
+        public Shadow shadow;
 
         //private Texture2D sheet;
         private Texture2D white;
@@ -34,7 +35,7 @@ namespace GMTK2023
 
         // gameplay fields
         private float hsp = 0f;
-        private float vsp = 0f;
+        public float vsp = 0f;
         private int hdir = 0;
         private int last_hdir = 1;
         private float hsp_max = 2f;
@@ -76,17 +77,28 @@ namespace GMTK2023
 
             Rectangle hcheck = current_level.SimpleCheckCollision(new Rectangle((int)(DrawBox.X + hsp_col_check), DrawBox.Y, DrawBox.Width, DrawBox.Height));
 
+            int diff = 0;
+
             if (hcheck != new Rectangle(0, 0, 0, 0))
             {
                 if (hsp > 0)
+                {
+                    diff = (int)Math.Abs(pos.X - hcheck.Left + 16);
                     pos.X = hcheck.Left - 16;
+                }
+                    
                 else if (hsp < 0)
+                {
+                    diff = -1 * (int)Math.Abs(pos.X - hcheck.Right);
                     pos.X = hcheck.Right;
+                }
+                    
                 hsp = 0;
             }
 
 
             pos.X += hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            shadow.pos.X += diff + hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
 
             // ---- vertical movement ----
@@ -124,7 +136,7 @@ namespace GMTK2023
 
         public void Follow(Rectangle player_rect)
         {
-            pos.X = player_rect.X;
+            // pos.X = player_rect.X;
 
             int diff = Math.Abs(player_rect.Y - 220);
 
