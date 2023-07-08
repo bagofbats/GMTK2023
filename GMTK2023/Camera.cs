@@ -32,5 +32,10 @@ namespace GMTK2023
                 0);
             Transform = position * offset;
         }
+
+        public (float, float) GetPos()
+        {
+            return (current_x, current_y);
+        }
     }
 }

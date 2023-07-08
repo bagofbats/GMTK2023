@@ -23,6 +23,8 @@ namespace GMTK2023
         private Camera cam;
         private ControllerManager contManager;
 
+        private Texture2D white;
+
         public bool player_active
         { get; private set; }
 
@@ -88,6 +90,8 @@ namespace GMTK2023
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+
+            white = Content.Load<Texture2D>("black");
 
             player.Load();
             shadow.Load();
@@ -173,6 +177,14 @@ namespace GMTK2023
 
             player.Draw(_spriteBatch);
             shadow.Draw(_spriteBatch);
+
+            (float cam_x, float cam_y) = cam.GetPos();
+
+            if (player_active)
+                _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y + 140, 320, 240), Color.White * 0.33f);
+
+            else
+                _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y, 320, 60), Color.Black * 0.33f);
 
             _spriteBatch.End();
 

@@ -52,7 +52,7 @@ namespace GMTK2023
         public void Draw(SpriteBatch _spriteBatch)
         {
             for (int i = 0; i < walls.Count; i++)
-                _spriteBatch.Draw(white, walls[i], Color.Gray);
+                _spriteBatch.Draw(white, walls[i], Color.LightGray);
 
 
             Rectangle mirror_rect = new Rectangle(0, mirror, bounds.Width, 1);

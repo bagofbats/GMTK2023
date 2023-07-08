@@ -38,7 +38,7 @@ namespace GMTK2023
         public float vsp = 0f;
         private int hdir = 0;
         private int last_hdir = 1;
-        private float hsp_max = 2f;
+        private float hsp_max = 1.7f;
         private float grav = 0.211f;
 
         public Rectangle DrawBox
@@ -108,7 +108,7 @@ namespace GMTK2023
             vsp -= grav;
 
             if (space_pressed && pos.Y >= 221)
-                vsp = 4.2f;
+                vsp = 3.8f;
 
             if (space_released && vsp > 0)
                 vsp /= 2;

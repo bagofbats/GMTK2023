@@ -103,15 +103,15 @@ namespace GMTK2023
             }
 
 
-            pos.X += hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
-            shadow.pos.X += diff + hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
+            pos.X += (int)(hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60);
+            shadow.pos.X += (int)(diff + (hsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60));
 
 
             // ---- vertical movement ----
             vsp += grav;
 
             if (space_pressed && pos.Y <= 220 - 32)
-                vsp = -4.2f;
+                vsp = -3.8f;
 
             if (space_released && vsp < 0)
                 vsp /= 2;
