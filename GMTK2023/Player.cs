@@ -64,7 +64,11 @@ namespace GMTK2023
 
         public void Draw(SpriteBatch _spriteBatch)
         {
-            _spriteBatch.Draw(sheet, DrawBox, frame, Color.White);
+            float transparency = 1f;
+            if (!root.player_active)
+                transparency = 0.7f;
+
+            _spriteBatch.Draw(sheet, DrawBox, frame, Color.White * transparency);
             //_spriteBatch.Draw(white, HitBox, Color.Blue * 0.4f);
         }
 
