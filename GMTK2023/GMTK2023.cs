@@ -19,22 +19,45 @@ namespace GMTK2023
 
         private Player player;
         private Shadow shadow;
-        private Level the_level;
+        private Level lvl1;
+
+
+        public Level current_level
+        { get; private set; }
+
         public Camera cam
         { get; private set; }
         private ControllerManager contManager;
 
         private Texture2D white;
 
+        /**
+        private List<Rectangle> lvlx_walls = new List<Rectangle>();
+        private List<Vector2> lvlx_doors = new List<Vector2>();
+        private List<Vector2> lvlx_starting_pos = new List<Vector2>();
+        private int lvlx_mirror = 140;
+        */
+
+        private List<Rectangle> lvl0_walls = new List<Rectangle>();
+        private List<Vector2> lvl0_doors = new List<Vector2>();
+        private List<Vector2> lvl0_starting_pos = new List<Vector2>();
+        private int lvl0_mirror = 140;
+
         private List<Rectangle> lvl1_walls = new List<Rectangle>()
         {
-            new Rectangle(300, 220 - 24, 96, 49),
-            new Rectangle(396, 220 - 24, 96, 25),
-            new Rectangle(396, 220, 96, 9),
-            new Rectangle(396 + 96, 220 - 8, 256 * 2, 17),
-            new Rectangle(532, 220, 24, 64),
-            new Rectangle(662, 220 - 72, 24, 64)
+            new Rectangle(140, 110, 32, 48)
         };
+        private List<Vector2> lvl1_doors = new List<Vector2>()
+        {
+            new Vector2(156, 74),
+            new Vector2(156, 206)
+        };
+        private List<Vector2> lvl1_starting_pos = new List<Vector2>()
+        {
+            new Vector2(64, 140 - 32),
+            new Vector2(64, 141)
+        };
+        private int lvl1_mirror = 140;
 
         public bool player_active
         { get; private set; }
@@ -53,10 +76,9 @@ namespace GMTK2023
             shadow = new Shadow(this, new Vector2(100, 300), contManager);
             cam = new Camera();
 
-            the_level = new Level(this, new Rectangle(0, 0, 960 + 160, 360), player, shadow, cam, lvl1_walls);
+            lvl1 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl1_walls, lvl1_doors, lvl1_starting_pos, lvl1_mirror);
 
-            player.current_level = the_level;
-            shadow.current_level = the_level;
+            current_level = lvl1;
             player.shadow = shadow;
             shadow.player = player;
 
@@ -106,7 +128,7 @@ namespace GMTK2023
 
             player.Load();
             shadow.Load();
-            the_level.Load();
+            lvl1.Load();
         }
 
         protected override void Update(GameTime gameTime)
@@ -122,7 +144,7 @@ namespace GMTK2023
             {
                 if (player_active)
                 {
-                    Rectangle check = the_level.SimpleCheckCollision(shadow.HitBox);
+                    Rectangle check = lvl1.SimpleCheckCollision(shadow.HitBox);
                     if (check == new Rectangle(0, 0, 0, 0))
                     {
                         player_active = false;
@@ -132,7 +154,7 @@ namespace GMTK2023
                 }
                 else
                 {
-                    Rectangle check = the_level.SimpleCheckCollision(player.HitBox);
+                    Rectangle check = lvl1.SimpleCheckCollision(player.HitBox);
                     if (check == new Rectangle(0, 0, 0, 0))
                     {
                         player_active = true;
@@ -160,16 +182,16 @@ namespace GMTK2023
             if (player_active)
             {
                 x_follow = player.DrawBox.X - 160 + 16;
-                y_follow = 80;
+                y_follow = 0;
             }
             else
             {
                 x_follow = shadow.DrawBox.X - 160 + 16;
-                y_follow = 160;
+                y_follow = 0;
             }
                 
 
-            x_follow = Math.Clamp(x_follow, the_level.bounds.Left, the_level.bounds.Right - 480);
+            x_follow = Math.Clamp(x_follow, lvl1.bounds.Left, lvl1.bounds.Right - 320);
 
             cam.Follow(new Vector2(x_follow, y_follow));
 
@@ -184,19 +206,20 @@ namespace GMTK2023
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
                 SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, transformMatrix: cam.Transform);
 
-            the_level.Draw(_spriteBatch);
+            lvl1.Draw(_spriteBatch);
 
             player.Draw(_spriteBatch);
             shadow.Draw(_spriteBatch);
 
             (float cam_x, float cam_y) = cam.GetPos();
 
+            /**
             if (player_active)
                 _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y + 140, 320, 240), Color.White * 0.33f);
 
             else
                 _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y, 320, 60), Color.Black * 0.33f);
-
+            */
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);

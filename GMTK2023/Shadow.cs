@@ -14,7 +14,6 @@ namespace GMTK2023
         private GMTK2023 root;
         public Vector2 pos;
         private ControllerManager contManager;
-        public Level current_level;
         public Player player;
 
         private Texture2D sheet;
@@ -38,7 +37,7 @@ namespace GMTK2023
         public float vsp = 0f;
         private int hdir = 0;
         private int last_hdir = 1;
-        private float hsp_max = 1.7f;
+        private float hsp_max = 1f;
         private float grav = 0.211f;
 
         public Rectangle DrawBox
@@ -66,6 +65,12 @@ namespace GMTK2023
             if (root.player_active)
                 transparency = 0.7f;
 
+            var door = root.current_level.doors[1];
+            if (HitBox.Contains(door.pos))
+                frame.X = 64;
+            else
+                frame.X = 0;
+
             _spriteBatch.Draw(sheet, DrawBox, frame, Color.White * transparency);
             //_spriteBatch.Draw(white, HitBox, Color.Blue * 0.4f);
         }
@@ -83,7 +88,7 @@ namespace GMTK2023
             else
                 hsp_col_check -= 1;
 
-            Rectangle hcheck = current_level.SimpleCheckCollision(new Rectangle((int)(HitBox.X + hsp_col_check), HitBox.Y, HitBox.Width, HitBox.Height));
+            Rectangle hcheck = root.current_level.SimpleCheckCollision(new Rectangle((int)(HitBox.X + hsp_col_check), HitBox.Y, HitBox.Width, HitBox.Height));
 
             float diff = 0;
 
@@ -119,8 +124,10 @@ namespace GMTK2023
             // ---- vertical movement ----
             vsp -= grav;
 
-            if (space_pressed && pos.Y >= 221)
-                vsp = 3.8f;
+            bool wall_above = root.current_level.WallAbove(HitBox);
+
+            if (space_pressed && (pos.Y <= root.current_level.mirror + 1 || wall_above))
+                vsp = 2.8f;
 
             if (space_released && vsp > 0)
                 vsp /= 2;
@@ -131,7 +138,7 @@ namespace GMTK2023
             else
                 vsp_col_check -= 1;
 
-            Rectangle vcheck = current_level.SimpleCheckCollision(new Rectangle(HitBox.X, (int)(HitBox.Y + vsp_col_check), HitBox.Width, HitBox.Height));
+            Rectangle vcheck = root.current_level.SimpleCheckCollision(new Rectangle(HitBox.X, (int)(HitBox.Y + vsp_col_check), HitBox.Width, HitBox.Height));
 
             if (vcheck != new Rectangle(0, 0, 0, 0))
             {
@@ -145,17 +152,17 @@ namespace GMTK2023
 
             pos.Y += vsp * (float)gameTime.ElapsedGameTime.TotalSeconds * 60;
 
-            if (pos.Y <= 221)
-                pos.Y = 221;
+            if (pos.Y <= root.current_level.mirror + 1)
+                pos.Y = root.current_level.mirror + 1;
         }
 
         public void Follow(Rectangle player_rect)
         {
             // pos.X = player_rect.X;
 
-            int diff = Math.Abs(player_rect.Y - 220 + 31);
+            int diff = Math.Abs(player_rect.Y - root.current_level.mirror + 31);
 
-            pos.Y = 220 + diff;
+            pos.Y = root.current_level.mirror + diff;
         }
 
         private void GetInput()
