@@ -44,6 +44,9 @@ namespace GMTK2023
         public Rectangle DrawBox
         { get { return new Rectangle((int)pos.X, (int)pos.Y, 32, 32); } }
 
+        public Rectangle HitBox
+        { get { return new Rectangle((int)pos.X + 10, (int)pos.Y, 12, 20); } }
+
         public Shadow(GMTK2023 root, Vector2 pos, ControllerManager contManager)
         {
             this.root = root;
@@ -60,6 +63,7 @@ namespace GMTK2023
         public void Draw(SpriteBatch _spriteBatch)
         {
             _spriteBatch.Draw(sheet, DrawBox, frame, Color.White);
+            //_spriteBatch.Draw(white, HitBox, Color.Blue * 0.4f);
         }
 
         public void Update(GameTime gameTime)
@@ -75,7 +79,7 @@ namespace GMTK2023
             else
                 hsp_col_check -= 1;
 
-            Rectangle hcheck = current_level.SimpleCheckCollision(new Rectangle((int)(DrawBox.X + hsp_col_check), DrawBox.Y, DrawBox.Width, DrawBox.Height));
+            Rectangle hcheck = current_level.SimpleCheckCollision(new Rectangle((int)(HitBox.X + hsp_col_check), HitBox.Y, HitBox.Width, HitBox.Height));
 
             float diff = 0;
 
@@ -83,13 +87,13 @@ namespace GMTK2023
             {
                 if (hsp > 0)
                 {
-                    diff = (int)Math.Abs(pos.X - hcheck.Left + 32);
-                    pos.X = hcheck.Left - 32;
+                    diff = (int)Math.Abs(pos.X - hcheck.Left + 32 - 10);
+                    pos.X = hcheck.Left - 32 + 10;
                 }
                 else if (hsp < 0)
                 {
-                    diff = -1 * (int)Math.Abs(pos.X - hcheck.Right);
-                    pos.X = hcheck.Right;
+                    diff = -1 * (int)Math.Abs(pos.X - hcheck.Right + 10);
+                    pos.X = hcheck.Right - 10;
                 }
                     
                 hsp = 0;
@@ -115,7 +119,7 @@ namespace GMTK2023
             else
                 vsp_col_check -= 1;
 
-            Rectangle vcheck = current_level.SimpleCheckCollision(new Rectangle(DrawBox.X, (int)(DrawBox.Y + vsp_col_check), DrawBox.Width, DrawBox.Height));
+            Rectangle vcheck = current_level.SimpleCheckCollision(new Rectangle(HitBox.X, (int)(HitBox.Y + vsp_col_check), HitBox.Width, HitBox.Height));
 
             if (vcheck != new Rectangle(0, 0, 0, 0))
             {

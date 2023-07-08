@@ -40,7 +40,7 @@ namespace GMTK2023
             shadow = new Shadow(this, new Vector2(100, 300), contManager);
             cam = new Camera();
 
-            the_level = new Level(this, new Rectangle(0, 0, 480 * 2, 360), player, shadow, cam);
+            the_level = new Level(this, new Rectangle(0, 0, 960 + 160, 360), player, shadow, cam);
 
             player.current_level = the_level;
             shadow.current_level = the_level;
@@ -52,8 +52,8 @@ namespace GMTK2023
             int w = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             int h = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
-            int target_w = 480;
-            int target_h = 360;
+            int target_w = 320;
+            int target_h = 240;
             int scale = 1;
 
             while (target_w * (scale + 1) < w && target_h * (scale + 1) < h)
@@ -80,7 +80,7 @@ namespace GMTK2023
 
             base.Initialize();
 
-            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 480, 360);
+            _nativeRenderTarget = new RenderTarget2D(GraphicsDevice, 320, 240);
         }
 
         protected override void LoadContent()
@@ -107,7 +107,7 @@ namespace GMTK2023
             {
                 if (player_active)
                 {
-                    Rectangle check = the_level.SimpleCheckCollision(shadow.DrawBox);
+                    Rectangle check = the_level.SimpleCheckCollision(shadow.HitBox);
                     if (check == new Rectangle(0, 0, 0, 0))
                     {
                         player_active = false;
@@ -117,7 +117,7 @@ namespace GMTK2023
                 }
                 else
                 {
-                    Rectangle check = the_level.SimpleCheckCollision(player.DrawBox);
+                    Rectangle check = the_level.SimpleCheckCollision(player.HitBox);
                     if (check == new Rectangle(0, 0, 0, 0))
                     {
                         player_active = true;
@@ -144,13 +144,13 @@ namespace GMTK2023
 
             if (player_active)
             {
-                x_follow = player.DrawBox.X - 240 + 8;
-                y_follow = 0;
+                x_follow = player.DrawBox.X - 160 + 16;
+                y_follow = 80;
             }
             else
             {
-                x_follow = shadow.DrawBox.X - 240 + 8;
-                y_follow = 80;
+                x_follow = shadow.DrawBox.X - 160 + 16;
+                y_follow = 160;
             }
                 
 
@@ -164,7 +164,7 @@ namespace GMTK2023
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.SetRenderTarget(_nativeRenderTarget);
-            GraphicsDevice.Clear(Color.DarkSlateGray);
+            GraphicsDevice.Clear(Color.DimGray);
 
             _spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend,
                 SamplerState.PointWrap, DepthStencilState.None, RasterizerState.CullCounterClockwise, transformMatrix: cam.Transform);
