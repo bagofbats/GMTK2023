@@ -33,7 +33,7 @@ namespace GMTK2023
         private bool enter_released;
 
         // gameplay fields
-        private float hsp = 0f;
+        public float hsp = 0f;
         public float vsp = 0f;
         private int hdir = 0;
         public int last_hdir = 1;
@@ -65,8 +65,7 @@ namespace GMTK2023
             if (root.player_active)
                 transparency = 0.7f;
 
-            var door = root.current_level.doors[1];
-            if (HitBox.Contains(door.pos))
+            if (root.shadow_ready)
                 frame.X = 64;
             else
                 frame.X = 0;
@@ -159,6 +158,13 @@ namespace GMTK2023
 
             if (pos.Y <= root.current_level.mirror + 1)
                 pos.Y = root.current_level.mirror + 1;
+
+            // misc
+            var door = root.current_level.doors[1];
+            if (HitBox.Contains(door.pos))
+                root.shadow_ready = true;
+            else
+                root.shadow_ready = false;
         }
 
         public void Follow(Rectangle player_rect)
@@ -170,6 +176,12 @@ namespace GMTK2023
             pos.Y = root.current_level.mirror + diff;
 
             last_hdir = player.last_hdir;
+
+            var door = root.current_level.doors[1];
+            if (HitBox.Contains(door.pos))
+                root.shadow_ready = true;
+            else
+                root.shadow_ready = false;
         }
 
         private void GetInput()

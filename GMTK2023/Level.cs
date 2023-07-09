@@ -24,6 +24,7 @@ namespace GMTK2023
 
         private List<Rectangle> walls = new List<Rectangle>();
         public List<Door> doors = new List<Door>();
+        private List<Vector2> starting_pos= new List<Vector2>();
 
         public Level(GMTK2023 root, Rectangle bounds, Player player, Shadow shadow, Camera cam, List<Rectangle> walls, List<Vector2> doors, List<Vector2> starting_pos, int mirror) 
         {
@@ -33,9 +34,7 @@ namespace GMTK2023
             this.shadow = shadow;
             this.cam = cam;
             this.mirror = mirror;
-
-            player.pos = starting_pos[0];
-            shadow.pos = starting_pos[1];
+            this.starting_pos = starting_pos;
 
             foreach (Rectangle wall in walls)
                 this.walls.Add(wall);
@@ -48,12 +47,12 @@ namespace GMTK2023
             this.walls.Add(new Rectangle(bounds.X + bounds.Width, 0, 32, bounds.Height));
         }
 
-        public void Load()
+        public void Load(Texture2D white, Texture2D sheet)
         {
-            white = root.Content.Load<Texture2D>("black");
+            this.white = white;
 
-            doors[0].Load(root);
-            doors[1].Load(root);
+            doors[0].Load(sheet);
+            doors[1].Load(sheet);
         }
 
         public void Draw(SpriteBatch _spriteBatch)
@@ -108,6 +107,16 @@ namespace GMTK2023
             }
             return false;
         }
+
+        public void Initialize()
+        {
+            player.pos = starting_pos[0];
+            shadow.pos = starting_pos[1];
+            player.hsp = 0;
+            shadow.hsp = 0;
+            player.vsp = 0;
+            shadow.vsp = 0;
+        }
     }
 
     public class Door
@@ -131,9 +140,9 @@ namespace GMTK2023
                 frame.Y = 32;
         }
 
-        public void Load(GMTK2023 root)
+        public void Load(Texture2D sheet)
         {
-            sheet = root.Content.Load<Texture2D>("gmtk2023_sheet");
+            this.sheet = sheet;
         }
 
         public void Draw(SpriteBatch _spriteBatch)

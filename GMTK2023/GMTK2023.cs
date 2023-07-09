@@ -25,6 +25,11 @@ namespace GMTK2023
         private Level lvl3;
         private Level lvl4;
 
+        private Dictionary<Level, Level> lvl_map = new Dictionary<Level, Level>();
+
+        public bool player_ready = false;
+        public bool shadow_ready = false;
+
 
         public Level current_level
         { get; private set; }
@@ -34,6 +39,7 @@ namespace GMTK2023
         private ControllerManager contManager;
 
         private Texture2D white;
+        private Texture2D sheet;
 
         /**
         private List<Rectangle> lvlx_walls = new List<Rectangle>();
@@ -75,6 +81,24 @@ namespace GMTK2023
         };
         private int lvl2_mirror = 140;
 
+        private List<Rectangle> lvl3_walls = new List<Rectangle>()
+        {
+            new Rectangle(0, 140 - 4, 320, 9),
+            new Rectangle(110, 140 - 12, 320, 8),
+            new Rectangle(152, 64, 16, 140)
+        };
+        private List<Vector2> lvl3_doors = new List<Vector2>()
+        {
+            new Vector2(256, 140 - 27),
+            new Vector2(256, 140 + 28)
+        };
+        private List<Vector2> lvl3_starting_pos = new List<Vector2>()
+        {
+            new Vector2(32, 140 - 32 - 8),
+            new Vector2(32, 140 + 8)
+        };
+        private int lvl3_mirror = 140;
+
         private List<Rectangle> lvl1_walls = new List<Rectangle>()
         {
             new Rectangle(140, 110, 32, 48)
@@ -111,8 +135,14 @@ namespace GMTK2023
             lvl1 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl1_walls, lvl1_doors, lvl1_starting_pos, lvl1_mirror);
             lvl0 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl0_walls, lvl0_doors, lvl0_starting_pos, lvl0_mirror);
             lvl2 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl2_walls, lvl2_doors, lvl2_starting_pos, lvl2_mirror);
+            lvl3 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl3_walls, lvl3_doors, lvl3_starting_pos, lvl3_mirror);
 
-            current_level = lvl2;
+            lvl_map.Add(lvl0, lvl2);
+            lvl_map.Add(lvl2, lvl3);
+            lvl_map.Add(lvl3, lvl1);
+
+            current_level = lvl0;
+            current_level.Initialize();
             player.shadow = shadow;
             shadow.player = player;
 
@@ -159,10 +189,11 @@ namespace GMTK2023
             // TODO: use this.Content to load your game content here
 
             white = Content.Load<Texture2D>("black");
+            sheet = Content.Load<Texture2D>("gmtk2023_sheet");
 
             player.Load();
             shadow.Load();
-            current_level.Load();
+            current_level.Load(white, sheet);
         }
 
         protected override void Update(GameTime gameTime)
@@ -208,6 +239,15 @@ namespace GMTK2023
             {
                 shadow.Update(gameTime);
                 player.Follow(shadow.DrawBox);
+            }
+
+            if (player_ready && shadow_ready)
+            {
+                current_level = lvl_map[current_level];
+                current_level.Initialize();
+                current_level.Load(white, sheet);
+                player_ready = false;
+                shadow_ready = false;
             }
 
             int x_follow;
