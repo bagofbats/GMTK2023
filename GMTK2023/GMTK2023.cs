@@ -43,6 +43,7 @@ namespace GMTK2023
 
         private Texture2D white;
         private Texture2D sheet;
+        private Texture2D writing;
 
         public float walk_timer = 0;
 
@@ -271,6 +272,7 @@ namespace GMTK2023
 
             white = Content.Load<Texture2D>("black");
             sheet = Content.Load<Texture2D>("gmtk2023_sheet");
+            writing = Content.Load<Texture2D>("gmtk2023_writing");
 
             player.Load();
             shadow.Load();
@@ -399,6 +401,37 @@ namespace GMTK2023
 
             else
                 _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y, 320, current_level.mirror), Color.LightBlue * 0.3f);
+
+            if (current_level == lvl0)
+            {
+                _spriteBatch.Draw(writing, new Rectangle(32, 32, 64, 32), new Rectangle(0, 0, 64, 32), Color.White);
+                _spriteBatch.Draw(writing, new Rectangle(48, 64, 64, 32), new Rectangle(0, 32, 64, 32), Color.White);
+            }
+
+            if (current_level == lvl2)
+            {
+                _spriteBatch.Draw(writing, new Rectangle(48, 32, 80, 48), new Rectangle(64, 0, 80, 48), Color.White);
+            }
+
+            if (current_level == lvl3)
+            {
+                _spriteBatch.Draw(writing, new Rectangle(32, 24, 96, 64), new Rectangle(64, 48, 96, 64), Color.White);
+            }
+
+            if (current_level == lvl4)
+            {
+                _spriteBatch.Draw(writing, new Rectangle(32, 24, 64, 32), new Rectangle(144, 0, 64, 32), Color.White);
+            }
+
+            if (current_level == lvl6)
+            {
+                _spriteBatch.Draw(writing, new Rectangle(160 - 32, 24, 64, 32), new Rectangle(144, 0, 64, 32), Color.White);
+            }
+
+            if (current_level == lvl_final)
+            {
+                _spriteBatch.Draw(writing, new Rectangle(160 - 32, 32, 64, 80), new Rectangle(160, 32, 64, 80), Color.White);
+            }
             
             _spriteBatch.End();
 
