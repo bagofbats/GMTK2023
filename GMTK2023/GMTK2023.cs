@@ -26,6 +26,7 @@ namespace GMTK2023
         private Level lvl4;
         private Level lvl5;
         private Level lvl6;
+        private Level lvl_final;
 
         private Dictionary<Level, Level> lvl_map = new Dictionary<Level, Level>();
 
@@ -175,6 +176,19 @@ namespace GMTK2023
         };
         private int lvl6_mirror = 120;
 
+        private List<Rectangle> lvlx_walls = new List<Rectangle>();
+        private List<Vector2> lvlx_doors = new List<Vector2>()
+        {
+            new Vector2(600, 0),
+            new Vector2(600, 0)
+        };
+        private List<Vector2> lvlx_starting_pos = new List<Vector2>()
+        {
+            new Vector2(160, 140 - 32),
+            new Vector2(160, 141)
+        };
+        private int lvlx_mirror = 140;
+
         public bool player_active
         { get; private set; }
 
@@ -199,6 +213,7 @@ namespace GMTK2023
             lvl4 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl4_walls, lvl4_doors, lvl4_starting_pos, lvl4_mirror);
             lvl5 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl5_walls, lvl5_doors, lvl5_starting_pos, lvl5_mirror);
             lvl6 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl6_walls, lvl6_doors, lvl6_starting_pos, lvl6_mirror);
+            lvl_final = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvlx_walls, lvlx_doors, lvlx_starting_pos, lvlx_mirror);
 
             lvl_map.Add(lvl0, lvl2);
             lvl_map.Add(lvl2, lvl3);
@@ -206,8 +221,9 @@ namespace GMTK2023
             lvl_map.Add(lvl1, lvl5);
             lvl_map.Add(lvl5, lvl4);
             lvl_map.Add(lvl4, lvl6);
+            lvl_map.Add(lvl6, lvl_final);
 
-            current_level = lvl6;
+            current_level = lvl0;
             player.shadow = shadow;
             shadow.player = player;
 
