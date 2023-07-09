@@ -247,13 +247,13 @@ namespace GMTK2023
 
             (float cam_x, float cam_y) = cam.GetPos();
 
-            /**
-            if (player_active)
-                _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y + 140, 320, 240), Color.White * 0.33f);
+            
+            //if (player_active)
+                _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y + current_level.mirror, 320, 240), Color.Black * 0.33f);
 
-            else
-                _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y, 320, 60), Color.Black * 0.33f);
-            */
+            //else
+            //    _spriteBatch.Draw(white, new Rectangle((int)cam_x, (int)cam_y, 320, current_level.mirror), Color.White * 0.33f);
+            
             _spriteBatch.End();
 
             GraphicsDevice.SetRenderTarget(null);
