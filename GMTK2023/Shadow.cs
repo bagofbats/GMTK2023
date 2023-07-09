@@ -18,7 +18,7 @@ namespace GMTK2023
 
         private Texture2D sheet;
         private Texture2D white;
-        private Rectangle frame = new Rectangle(0, 32, 32, 32);
+        public Rectangle frame = new Rectangle(0, 32, 32, 32);
 
         // input fields
         private bool up;
@@ -39,6 +39,7 @@ namespace GMTK2023
         public int last_hdir = 1;
         private float hsp_max = 1f;
         private float grav = 0.211f;
+        private bool wall_above = true;
 
         public Rectangle DrawBox
         { get { return new Rectangle((int)pos.X, (int)pos.Y, 32, 32); } }
@@ -66,14 +67,25 @@ namespace GMTK2023
                 transparency = 0.7f;
 
             if (root.shadow_ready)
-                frame.X = 64;
+                frame.Y = 160;
+            else
+                frame.Y = 32;
+
+            if (last_hdir == -1)
+                frame.Y += 64;
+
+
+            if (!wall_above && pos.Y > root.current_level.mirror + 1)
+                frame.X = 96;
+            else if (hsp != 0)
+                frame.X = 64 + (32 * ((int)root.walk_timer % 4));
             else
                 frame.X = 0;
 
-            if (last_hdir == 1)
-                frame.Y = 32;
-            else
-                frame.Y = 96;
+            
+
+            if (root.player_active)
+                frame.X = player.frame.X;
 
             _spriteBatch.Draw(sheet, DrawBox, frame, Color.White * transparency);
             //_spriteBatch.Draw(white, HitBox, Color.Blue * 0.4f);
@@ -128,7 +140,7 @@ namespace GMTK2023
             // ---- vertical movement ----
             vsp -= grav;
 
-            bool wall_above = root.current_level.WallAbove(HitBox);
+            wall_above = root.current_level.WallAbove(HitBox);
 
             if (space_pressed && (pos.Y <= root.current_level.mirror + 1 || wall_above))
                 vsp = 2.8f;

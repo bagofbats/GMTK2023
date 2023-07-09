@@ -41,6 +41,8 @@ namespace GMTK2023
         private Texture2D white;
         private Texture2D sheet;
 
+        public float walk_timer = 0;
+
         /**
         private List<Rectangle> lvlx_walls = new List<Rectangle>();
         private List<Vector2> lvlx_doors = new List<Vector2>();
@@ -84,7 +86,7 @@ namespace GMTK2023
         private List<Rectangle> lvl3_walls = new List<Rectangle>()
         {
             new Rectangle(0, 140 - 4, 320, 9),
-            new Rectangle(110, 140 - 12, 320, 8),
+            new Rectangle(0, 140 - 12, 320, 8),
             new Rectangle(152, 64, 16, 140)
         };
         private List<Vector2> lvl3_doors = new List<Vector2>()
@@ -94,7 +96,7 @@ namespace GMTK2023
         };
         private List<Vector2> lvl3_starting_pos = new List<Vector2>()
         {
-            new Vector2(32, 140 - 32 - 8),
+            new Vector2(32, 140 - 32 - 16),
             new Vector2(32, 140 + 8)
         };
         private int lvl3_mirror = 140;
@@ -198,10 +200,12 @@ namespace GMTK2023
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //    Exit();
 
             // TODO: Add your update logic here
+
+            walk_timer += 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             contManager.GetInputs(Keyboard.GetState());
 
