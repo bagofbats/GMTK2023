@@ -21,6 +21,9 @@ namespace GMTK2023
         private Shadow shadow;
         private Level lvl1;
         private Level lvl0;
+        private Level lvl2;
+        private Level lvl3;
+        private Level lvl4;
 
 
         public Level current_level
@@ -45,8 +48,8 @@ namespace GMTK2023
         };
         private List<Vector2> lvl0_doors = new List<Vector2>()
         {
-            new Vector2(100, 100),
-            new Vector2(100, 200)
+            new Vector2(240, 140 - 48),
+            new Vector2(240, 140 + 48)
         };
         private List<Vector2> lvl0_starting_pos = new List<Vector2>()
         {
@@ -54,6 +57,23 @@ namespace GMTK2023
             new Vector2(32, 200)
         };
         private int lvl0_mirror = 140;
+
+        private List<Rectangle> lvl2_walls = new List<Rectangle>()
+        {
+            new Rectangle(0, 140 - 12, 320, 25),
+            new Rectangle(152, 64, 16, 64)
+        };
+        private List<Vector2> lvl2_doors = new List<Vector2>()
+        {
+            new Vector2(256, 140 - 32),
+            new Vector2(96, 140 + 32)
+        };
+        private List<Vector2> lvl2_starting_pos = new List<Vector2>()
+        {
+            new Vector2(32, 100),
+            new Vector2(32, 200)
+        };
+        private int lvl2_mirror = 140;
 
         private List<Rectangle> lvl1_walls = new List<Rectangle>()
         {
@@ -90,8 +110,9 @@ namespace GMTK2023
 
             lvl1 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl1_walls, lvl1_doors, lvl1_starting_pos, lvl1_mirror);
             lvl0 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl0_walls, lvl0_doors, lvl0_starting_pos, lvl0_mirror);
+            lvl2 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl2_walls, lvl2_doors, lvl2_starting_pos, lvl2_mirror);
 
-            current_level = lvl0;
+            current_level = lvl2;
             player.shadow = shadow;
             shadow.player = player;
 
