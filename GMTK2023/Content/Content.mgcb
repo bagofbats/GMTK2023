@@ -49,3 +49,21 @@
 /processorParam:TextureFormat=Color
 /build:gmtk2023_writing.png
 
+#begin snd_dead.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:snd_dead.wav
+
+#begin snd_jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:snd_jump.wav
+
+#begin snd_key.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:snd_key.wav
+

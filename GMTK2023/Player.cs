@@ -145,7 +145,11 @@ namespace GMTK2023
             wall_down = root.current_level.WallBelow(HitBox);
 
             if (space_pressed && (pos.Y >= root.current_level.mirror - 32 || wall_down))
+            {
                 vsp = -2.8f;
+                root.sfx[1].Play();
+            }
+                
 
             if (space_released && vsp < 0)
                 vsp /= 2;

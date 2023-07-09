@@ -131,6 +131,7 @@ namespace GMTK2023
         public void RemoveKey(Key key)
         {
             this.keys.Remove(key);
+            root.sfx[2].Play();
         }
     }
 

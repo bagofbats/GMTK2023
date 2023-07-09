@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -44,6 +45,7 @@ namespace GMTK2023
         private Texture2D white;
         private Texture2D sheet;
         private Texture2D writing;
+        public List<SoundEffect> sfx = new List<SoundEffect>();
 
         public float walk_timer = 0;
 
@@ -82,8 +84,8 @@ namespace GMTK2023
         };
         private List<Vector2> lvl2_starting_pos = new List<Vector2>()
         {
-            new Vector2(32, 100),
-            new Vector2(32, 200)
+            new Vector2(32, 140 - 12 - 32),
+            new Vector2(32, 140 - 12 + 25)
         };
         private int lvl2_mirror = 140;
 
@@ -274,15 +276,19 @@ namespace GMTK2023
             sheet = Content.Load<Texture2D>("gmtk2023_sheet");
             writing = Content.Load<Texture2D>("gmtk2023_writing");
 
+            sfx.Add(Content.Load<SoundEffect>("snd_dead"));
+            sfx.Add(Content.Load<SoundEffect>("snd_jump"));
+            sfx.Add(Content.Load<SoundEffect>("snd_key"));
+
             player.Load();
             shadow.Load();
-            LevelGoto(current_level);
+            LevelGoto(current_level, false);
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                LevelGoto(current_level);
+                LevelGoto(current_level, false);
 
             // TODO: Add your update logic here
 
@@ -302,6 +308,7 @@ namespace GMTK2023
                     {
                         player_active = false;
                         shadow.vsp = -player.vsp;
+                        sfx[0].Play();
                     }
                         
                 }
@@ -312,6 +319,7 @@ namespace GMTK2023
                     {
                         player_active = true;
                         player.vsp = -shadow.vsp;
+                        sfx[0].Play();
                     }
                         
                 }
@@ -358,7 +366,7 @@ namespace GMTK2023
             base.Update(gameTime);
         }
 
-        public void LevelGoto(Level lvl)
+        public void LevelGoto(Level lvl, bool sound=true)
         {
             lvl.Initialize();
             lvl.Load(white, sheet);
@@ -378,6 +386,9 @@ namespace GMTK2023
                 key.Load(sheet);
                 lvl.AddKey(key);
             }
+
+            if (sound)
+                sfx[2].Play();
         }
 
         protected override void Draw(GameTime gameTime)
