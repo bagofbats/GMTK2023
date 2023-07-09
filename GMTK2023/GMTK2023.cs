@@ -164,8 +164,7 @@ namespace GMTK2023
             lvl_map.Add(lvl3, lvl1);
             lvl_map.Add(lvl1, lvl4);
 
-            current_level = lvl1;
-            current_level.Initialize();
+            current_level = lvl4;
             player.shadow = shadow;
             shadow.player = player;
 
@@ -216,7 +215,7 @@ namespace GMTK2023
 
             player.Load();
             shadow.Load();
-            current_level.Load(white, sheet);
+            LevelGoto(current_level);
         }
 
         protected override void Update(GameTime gameTime)

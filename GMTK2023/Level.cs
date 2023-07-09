@@ -127,6 +127,11 @@ namespace GMTK2023
         {
             this.keys.Add(key);
         }
+
+        public void RemoveKey(Key key)
+        {
+            this.keys.Remove(key);
+        }
     }
 
     public class Door
@@ -172,8 +177,8 @@ namespace GMTK2023
 
     public class Key
     {
-        Vector2 pos;
-        bool player_half;
+        public Vector2 pos;
+        public bool player_half;
 
         private Texture2D sheet;
         private Rectangle bounds;

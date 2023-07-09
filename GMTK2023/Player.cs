@@ -179,6 +179,10 @@ namespace GMTK2023
                 root.player_ready = true;
             else
                 root.player_ready = false;
+
+            for (int i = root.current_level.keys.Count - 1; i >= 0; i--)
+                if (HitBox.Contains(root.current_level.keys[i].pos) && root.current_level.keys[i].player_half)
+                    root.current_level.RemoveKey(root.current_level.keys[i]);
         }
 
         public void Follow(Rectangle player_rect)
