@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,7 @@ namespace GMTK2023
         private List<Rectangle> walls = new List<Rectangle>();
         public List<Door> doors = new List<Door>();
         private List<Vector2> starting_pos= new List<Vector2>();
+        public List<Key> keys = new List<Key>();
 
         public Level(GMTK2023 root, Rectangle bounds, Player player, Shadow shadow, Camera cam, List<Rectangle> walls, List<Vector2> doors, List<Vector2> starting_pos, int mirror) 
         {
@@ -66,6 +68,9 @@ namespace GMTK2023
 
             doors[0].Draw(_spriteBatch);
             doors[1].Draw(_spriteBatch);
+
+            foreach (Key key in keys)
+                key.Draw(_spriteBatch);
         }
 
         public Rectangle SimpleCheckCollision(Rectangle input)
@@ -117,6 +122,11 @@ namespace GMTK2023
             player.vsp = 0;
             shadow.vsp = 0;
         }
+
+        public void AddKey(Key key)
+        {
+            this.keys.Add(key);
+        }
     }
 
     public class Door
@@ -127,6 +137,7 @@ namespace GMTK2023
         private Texture2D sheet;
         private Rectangle bounds;
         private Rectangle frame;
+        public bool locked = false;
 
 
         public Door(Vector2 pos, bool player_door) 
@@ -138,6 +149,46 @@ namespace GMTK2023
             frame = new Rectangle(32, 0, 32, 32);
             if (!player_door)
                 frame.Y = 32;
+        }
+
+        public void Load(Texture2D sheet)
+        {
+            this.sheet = sheet;
+        }
+
+        public void Draw(SpriteBatch _spriteBatch)
+        {
+            if (locked && !player_door)
+                frame.Y = 96;
+            else if (locked)
+                frame.Y = 64;
+            else if (!player_door)
+                frame.Y = 32;
+            else
+                frame.Y = 0;
+            _spriteBatch.Draw(sheet, bounds, frame, Color.White);
+        }
+    }
+
+    public class Key
+    {
+        Vector2 pos;
+        bool player_half;
+
+        private Texture2D sheet;
+        private Rectangle bounds;
+        private Rectangle frame;
+
+        public Key(Vector2 pos, bool player_half) 
+        { 
+            this.pos = pos;
+            this.player_half = player_half;
+
+            bounds = new Rectangle((int)pos.X - 16, (int)pos.Y - 16, 32, 32);
+
+            frame = new Rectangle(32, 128, 32, 32);
+            if (!player_half)
+                frame.Y = 160;
         }
 
         public void Load(Texture2D sheet)

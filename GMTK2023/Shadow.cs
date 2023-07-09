@@ -173,7 +173,7 @@ namespace GMTK2023
 
             // misc
             var door = root.current_level.doors[1];
-            if (HitBox.Contains(door.pos))
+            if (HitBox.Contains(door.pos) && !door.locked)
                 root.shadow_ready = true;
             else
                 root.shadow_ready = false;

@@ -175,7 +175,7 @@ namespace GMTK2023
 
             // misc
             var door = root.current_level.doors[0];
-            if (HitBox.Contains(door.pos))
+            if (HitBox.Contains(door.pos) && !door.locked)
                 root.player_ready = true;
             else
                 root.player_ready = false;

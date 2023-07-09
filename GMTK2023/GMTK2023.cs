@@ -117,6 +117,25 @@ namespace GMTK2023
         };
         private int lvl1_mirror = 140;
 
+        private List<Rectangle> lvl4_walls = new List<Rectangle>()
+        {
+            new Rectangle(96 + 16, 120 - 16, 16, 8),
+            new Rectangle(120 + 16, 121 + 16, 16, 8),
+            new Rectangle(136 + 16, 0, 8, 120),
+            new Rectangle(144 + 16, 121 - 32, 32, 32)
+        };
+        private List<Vector2> lvl4_doors = new List<Vector2>()
+        {
+            new Vector2(16, 120 - 16),
+            new Vector2(16, 120 + 16)
+        };
+        private List<Vector2> lvl4_starting_pos = new List<Vector2>()
+        {
+            new Vector2(32, 120 - 32),
+            new Vector2(32, 121)
+        };
+        private int lvl4_mirror = 120;
+
         public bool player_active
         { get; private set; }
 
@@ -138,12 +157,14 @@ namespace GMTK2023
             lvl0 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl0_walls, lvl0_doors, lvl0_starting_pos, lvl0_mirror);
             lvl2 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl2_walls, lvl2_doors, lvl2_starting_pos, lvl2_mirror);
             lvl3 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl3_walls, lvl3_doors, lvl3_starting_pos, lvl3_mirror);
+            lvl4 = new Level(this, new Rectangle(0, 0, 320, 240), player, shadow, cam, lvl4_walls, lvl4_doors, lvl4_starting_pos, lvl4_mirror);
 
             lvl_map.Add(lvl0, lvl2);
             lvl_map.Add(lvl2, lvl3);
             lvl_map.Add(lvl3, lvl1);
+            lvl_map.Add(lvl1, lvl4);
 
-            current_level = lvl0;
+            current_level = lvl1;
             current_level.Initialize();
             player.shadow = shadow;
             shadow.player = player;
@@ -200,12 +221,15 @@ namespace GMTK2023
 
         protected override void Update(GameTime gameTime)
         {
-            //if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-            //    Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+                LevelGoto(current_level);
 
             // TODO: Add your update logic here
 
             walk_timer += 10 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            current_level.doors[0].locked = current_level.keys.Count > 0;
+            current_level.doors[1].locked = current_level.keys.Count > 0;
 
             contManager.GetInputs(Keyboard.GetState());
 
@@ -248,10 +272,8 @@ namespace GMTK2023
             if (player_ready && shadow_ready)
             {
                 current_level = lvl_map[current_level];
-                current_level.Initialize();
-                current_level.Load(white, sheet);
-                player_ready = false;
-                shadow_ready = false;
+
+                LevelGoto(current_level);
             }
 
             int x_follow;
@@ -274,6 +296,21 @@ namespace GMTK2023
             cam.Follow(new Vector2(x_follow, y_follow));
 
             base.Update(gameTime);
+        }
+
+        public void LevelGoto(Level lvl)
+        {
+            current_level.Initialize();
+            current_level.Load(white, sheet);
+            player_ready = false;
+            shadow_ready = false;
+
+            if (current_level == lvl4)
+            {
+                Key key = new Key(new Vector2(184, 64), true);
+                key.Load(sheet);
+                current_level.AddKey(key);
+            }
         }
 
         protected override void Draw(GameTime gameTime)
